@@ -14,9 +14,23 @@ datasource db {
 }
 
 model Student {
-  id       String   @id @default(cuid())
-  name     String
-  usn      String
-  date     DateTime 
-  attendance Boolean
+  id        Int      @id @default(autoincrement())
+  name      String
+  attendance Attendance[]
+}
+
+model Class {
+  id        Int      @id @default(autoincrement())
+  name      String
+  date      DateTime
+  attendance Attendance[]
+}
+
+model Attendance {
+  id        Int      @id @default(autoincrement())
+  student   Student  @relation(fields: [studentId], references: [id])
+  studentId Int
+  class     Class    @relation(fields: [classId], references: [id])
+  classId   Int
+  markedAt  DateTime @default(now())
 }

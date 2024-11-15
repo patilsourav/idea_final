@@ -18,3 +18,22 @@ app.get('api/students/', async (req, res) => {
     res.status(500).json({error: 'Failed to fetch students'})
   }
 })
+
+// Adding students details
+app.post('api/students/', async (req, res) => {
+  const { name, usn, date, attendance } = req.body;
+  try {
+    const newStudent = await prisma.students.create({
+      data:{
+        name,
+        usn,
+        date: new Date(date),
+        attendance
+      },
+    })
+    res.status(201).json(newStudent);
+  } catch (error) {
+    console.error('Couldnt add student details', error.message || error);
+    res.status(500).json({ error: 'Failed to add student'})
+  }
+});
